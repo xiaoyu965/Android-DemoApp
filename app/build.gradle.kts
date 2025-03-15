@@ -61,7 +61,9 @@ dependencies {
     implementation("androidx.camera:camera-camera2:1.0.2")       // Camera2 API支持
     implementation("androidx.camera:camera-lifecycle:1.0.2")     // 生命周期支持
     implementation("androidx.camera:camera-view:1.0.0-alpha27")
-    implementation(libs.appcompat)  // CameraX 视图支持
+    implementation(libs.appcompat)
+    implementation(libs.androidx.viewpager2)
+    implementation(libs.google.material)  // CameraX 视图支持
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

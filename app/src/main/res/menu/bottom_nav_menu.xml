@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_app"
+        android:title="@string/app"
+        android:icon="@mipmap/ic_launcher"/>
+
+    <item
+        android:id="@+id/nav_fwk"
+        android:title="@string/fwk"
+        android:icon="@mipmap/ic_launcher_round"/>
+
+    <item
+        android:id="@+id/nav_alg"
+        android:title="@string/alg"
+        android:icon="@mipmap/ic_launcher"/>
+
+    <item
+        android:id="@+id/nav_me"
+        android:title="@string/me"
+        android:icon="@mipmap/ic_launcher_round"/>
+</menu>

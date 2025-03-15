@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 状态栏高度（适配不同设备） -->
+    <dimen name="status_bar_height">24dp</dimen>
+    <dimen name="status_bar_padding">0dp</dimen>
+</resources>

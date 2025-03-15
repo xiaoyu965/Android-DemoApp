@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">DemoApp</string>
+    <string name="app">应用</string>
+    <string name="fwk">系统</string>
+    <string name="alg">算法</string>
+    <string name="me">我的</string>
+    <string name="title">安卓面试宝典</string>
+    <string name="jump">拍照</string>
 </resources>
