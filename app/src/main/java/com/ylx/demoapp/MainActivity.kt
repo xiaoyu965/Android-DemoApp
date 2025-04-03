@@ -1,9 +1,10 @@
 package com.ylx.demoapp
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
+import android.widget.PopupMenu
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -36,14 +37,11 @@ class MainActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         // 设置Toolbar标题文字颜色为黑色，但需注意如果使用自定义标题视图，此设置可能无效。
 //        toolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.wechat_green))
-
         // 加载 XML 布局
         val titleView = layoutInflater.inflate(R.layout.toolbar_title, toolbar, false)
         toolbar.addView(titleView)
-
         // 隐藏系统默认标题
         supportActionBar?.setDisplayShowTitleEnabled(false)
-
         // 调整 Toolbar padding
         toolbar.setPadding(
             0,
@@ -52,27 +50,63 @@ class MainActivity : AppCompatActivity() {
             toolbar.paddingBottom
         )
 
+        // 仅加载主菜单
+        toolbar.inflateMenu(R.menu.toolbar_main_menu)
+        toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_more -> {
+                    showPopupMenu(toolbar.findViewById(R.id.menu_more))
+                    true
+                }
+                else -> false
+            }
+        }
+
         // 初始化组件
         viewPager2 = findViewById(R.id.viewPager2)
         bottomNav = findViewById(R.id.bottomNav)
-        val button = findViewById<Button>(R.id.bt_jump_fir)
-
 
         setupViewPager()
         setupBottomNav()
+    }
 
-        button.setOnClickListener {
-            // 创建一个Intent来启动SecondActivity
-            val intent = Intent(this, FirstActivity::class.java)
-            // 如果需要，你可以向Intent中添加额外的数据
-            // intent.putExtra("key", "value")
-            // 启动SecondActivity
-            startActivity(intent)
+    @SuppressLint("PrivateApi")
+    private fun showPopupMenu(anchorView: View) {
+        val popup = PopupMenu(this, anchorView)
+
+        // 加载独立的二级菜单资源
+        popup.menuInflater.inflate(R.menu.toolbar_popup_menu, popup.menu)
+
+        // 强制显示图标（关键代码）
+        try {
+            val method = popup.javaClass.getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+            method.isAccessible = true
+            method.invoke(popup, true)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
+        // 设置菜单项点击监听
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.menu_scan -> {
+                    startActivity(Intent(this, FirstActivity::class.java))
+                    true
+                }
+                R.id.menu_note -> {
+//                    showAddFriendDialog()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        // 显示菜单
+        popup.show()
     }
 
     private fun setupViewPager() {
-        viewPager2.adapter = object : FragmentStateAdapter(this) {
+        viewPager2.adapter = object : FragmentStateAdapter(supportFragmentManager, lifecycle) {
             override fun getItemCount(): Int = 4
 
             override fun createFragment(position: Int): Fragment = when (position) {

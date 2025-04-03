@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
@@ -61,6 +62,7 @@ dependencies {
     implementation("androidx.camera:camera-camera2:1.0.2")       // Camera2 API支持
     implementation("androidx.camera:camera-lifecycle:1.0.2")     // 生命周期支持
     implementation("androidx.camera:camera-view:1.0.0-alpha27")
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation(libs.appcompat)
     implementation(libs.androidx.viewpager2)
     implementation(libs.google.material)  // CameraX 视图支持

@@ -6,4 +6,7 @@
     <string name="me">我的</string>
     <string name="title">安卓面试宝典</string>
     <string name="jump">拍照</string>
+    <string name="more">更多</string>
+    <string name="scan">扫一扫</string>
+    <string name="note">笔记</string>
 </resources>

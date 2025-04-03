@@ -1,0 +1,41 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@color/grey"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- 图片部分 -->
+    <ImageView
+        android:id="@+id/recommendationImage"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="5dp"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:src="@drawable/mine"
+        android:layout_centerVertical="true" />
+
+    <!-- 文字部分 - Title -->
+    <TextView
+        android:id="@+id/recommendationTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:text="1."
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_toEndOf="@id/recommendationImage"
+        android:layout_centerVertical="true" />
+
+    <!-- 文字部分 - Description -->
+    <TextView
+        android:id="@+id/recommendationDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:text="Description"
+        android:textSize="16sp"
+        android:layout_toEndOf="@id/recommendationTitle"
+        android:layout_alignBottom="@id/recommendationTitle" />
+</RelativeLayout>

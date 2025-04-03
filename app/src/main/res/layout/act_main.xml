@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -14,12 +15,6 @@
         app:titleTextColor="@color/black"
         android:paddingTop="@dimen/status_bar_padding"
         app:theme="@style/ToolbarTheme"/>
-
-    <Button
-        android:id="@+id/bt_jump_fir"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/jump" />
 
     <!-- 主内容区域 -->
     <androidx.viewpager2.widget.ViewPager2
@@ -34,6 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="labeled"
+        android:background="@color/grey"
         app:itemIconTint="@drawable/nav_item_color"
         app:itemTextColor="@drawable/nav_item_color"/>
 </LinearLayout>

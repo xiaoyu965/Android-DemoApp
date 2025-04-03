@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "title": "Handler是什么？",
+    "answer": "Handler是不同线程之间传递和处理消息的机制，主要用于将UI操作送子线程传递到主线程，执行定时任务等。"
+  },
+  {
+    "id": 2,
+    "title": "What is Kotlin?",
+    "answer": "Kotlin is a statically typed programming language for modern multi-platform applications."
+  },
+  {
+    "id": 3,
+    "title": "What is ViewPager2?",
+    "answer": "ViewPager2 is a replacement for ViewPager that supports vertical scrolling and better integration with RecyclerView."
+  }
+]

@@ -3,20 +3,20 @@
     <item
         android:id="@+id/nav_app"
         android:title="@string/app"
-        android:icon="@mipmap/ic_launcher"/>
+        android:icon="@drawable/app"/>
 
     <item
         android:id="@+id/nav_fwk"
         android:title="@string/fwk"
-        android:icon="@mipmap/ic_launcher_round"/>
+        android:icon="@drawable/fwk"/>
 
     <item
         android:id="@+id/nav_alg"
         android:title="@string/alg"
-        android:icon="@mipmap/ic_launcher"/>
+        android:icon="@drawable/alg"/>
 
     <item
         android:id="@+id/nav_me"
         android:title="@string/me"
-        android:icon="@mipmap/ic_launcher_round"/>
+        android:icon="@drawable/mine"/>
 </menu>

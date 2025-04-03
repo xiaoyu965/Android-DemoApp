@@ -5,5 +5,24 @@
         <!-- 标题和菜单项颜色 -->
         <item name="android:textColorPrimary">@color/black</item>
         <item name="colorControlNormal">@color/black</item>
+        <!-- 强制Toolbar内容居中 -->
+        <item name="android:gravity">center</item>
+        <item name="titleTextStyle">@style/ToolbarTitleStyle</item>
+    </style>
+
+    <style name="ToolbarTitleStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- 自定义弹出菜单样式 -->
+    <style name="PopupMenuStyle" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:dropDownListViewStyle">@style/PopupListViewStyle</item>
+    </style>
+
+    <style name="PopupListViewStyle" parent="android:Widget.ListView.DropDown">
+        <item name="android:divider">@color/wechat_green</item>
+        <item name="android:dividerHeight">1dp</item>
     </style>
 </resources>
