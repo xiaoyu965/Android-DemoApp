@@ -6,6 +6,11 @@
   },
   {
     "id": 2,
+    "title": "为什么主线程不能执行耗时操作，子线程不能更新UI呢？",
+    "answer": "主线程需要处理UI更新、用户输入等快速响应事件，否则会出现卡顿甚至ANR。\n\t\t子线程不能更新UI是因为UI组件是不安全的，多个线程同时操作同一个UI组件会导致不可预知的结果；安卓的设置原则就是UI操作必须在主线程中执行，在UI框架中，每次更新UI时都会检查当前线程是否位主线程，否则就是抛出异常CalledFromWrongThreadException。"
+  },
+  {
+    "id": 2,
     "title": "What is Kotlin?",
     "answer": "Kotlin is a statically typed programming language for modern multi-platform applications."
   },
