@@ -13,6 +13,12 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
+    externalNativeBuild {
+        cmake {
+            path "./src/main/cpp/CMakeLists.txt"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
