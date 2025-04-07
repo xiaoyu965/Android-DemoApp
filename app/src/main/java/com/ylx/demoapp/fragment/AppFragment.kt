@@ -14,10 +14,36 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ylx.demoapp.R
 import com.ylx.demoapp.utils.JsonUtils
 
+// 数据模型
+data class QuestionData(
+    val modules: Map<String, String>,
+    val questions: List<Question>
+)
+
+data class Question(
+    val module: Int,
+    val number: Int,
+    val title: String,
+    val answer: String
+)
+
 class AppFragment : Fragment() {
+    // 密封类定义在Fragment类内部，作为成员
+    sealed class NavViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        class ModuleViewHolder(itemView: View) : NavViewHolder(itemView) {
+            val titleText: TextView = itemView.findViewById(R.id.moduleTitle)
+            val expandIcon: TextView = itemView.findViewById(R.id.expandIcon)
+        }
+
+        class QuestionViewHolder(itemView: View) : NavViewHolder(itemView) {
+            val titleText: TextView = itemView.findViewById(R.id.questionTitle)
+        }
+    }
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navRecyclerView: RecyclerView
+    private val expandedModules = mutableSetOf<Int>()
+    private lateinit var moduleNames: Map<Int, String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,8 +56,10 @@ class AppFragment : Fragment() {
         drawerLayout = view.findViewById(R.id.drawerLayout)
         navRecyclerView = view.findViewById(R.id.navRecyclerView)
 
-        // 从JSON文件加载问题
-        val questions: List<Question> = JsonUtils.parseJsonFromRaw(requireContext(), R.raw.app)
+        // 从JSON文件加载数据
+        val questionData = JsonUtils.parseJsonFromRaw<QuestionData>(requireContext(), R.raw.app)
+        moduleNames = questionData.modules.mapKeys { it.key.toInt() }
+        val questions = questionData.questions.sortedBy { it.module }
 
         // 绑定主RecyclerView
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
@@ -56,47 +84,73 @@ class AppFragment : Fragment() {
 
     private fun setupNavigation(questions: List<Question>, mainRecyclerView: RecyclerView) {
         navRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val navAdapter = NavAdapter(questions) { position ->
-            // 点击导航项后跳转到对应位置
-            mainRecyclerView.scrollToPosition(position)
-            drawerLayout.closeDrawers()
+
+        val groupedQuestions = questions.groupBy { it.module }
+        val navItems = mutableListOf<NavItem>()
+
+        groupedQuestions.forEach { (module, questions) ->
+            // 使用moduleNames获取模块名称
+            val moduleName = moduleNames[module] ?: "Module $module"
+            navItems.add(NavItem.ModuleItem(module, moduleName))
+
+            if (module in expandedModules) {
+                questions.forEach { question ->
+                    navItems.add(NavItem.QuestionItem(question))
+                }
+            }
+        }
+
+        val navAdapter = NavAdapter(navItems) { position ->
+            val item = navItems[position]
+            when (item) {
+                is NavItem.ModuleItem -> {
+                    if (item.module in expandedModules) {
+                        expandedModules.remove(item.module)
+                    } else {
+                        expandedModules.add(item.module)
+                    }
+                    setupNavigation(questions, mainRecyclerView)
+                }
+                is NavItem.QuestionItem -> {
+                    val questionPosition = questions.indexOfFirst { it.number == item.question.number }
+                    if (questionPosition != -1) {
+                        mainRecyclerView.scrollToPosition(questionPosition)
+                    }
+                    drawerLayout.closeDrawers()
+                }
+            }
         }
         navRecyclerView.adapter = navAdapter
     }
 
-    // 数据模型
-    data class Question(
-        val id: Int,
-        val title: String, // 题目
-        val answer: String // 答案
-    )
+    // 导航项密封类
+    sealed class NavItem {
+        data class ModuleItem(val module: Int, val moduleName: String) : NavItem()
+        data class QuestionItem(val question: Question) : NavItem()
+    }
 
     // 主列表适配器
     class QuestionAdapter(private val questions: List<Question>) :
         RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder>() {
 
-        // 定义 ViewHolder
         class QuestionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val idText: TextView = itemView.findViewById(R.id.idText)
             val questionText: TextView = itemView.findViewById(R.id.questionText)
             val answerText: TextView = itemView.findViewById(R.id.answerText)
         }
 
-        // 创建 ViewHolder
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuestionViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_question, parent, false)
             return QuestionViewHolder(view)
         }
 
-        // 绑定数据
         override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
             val question = questions[position]
-            holder.idText.text = question.id.toString()
+            holder.idText.text = "${question.module}.${question.number}"
             holder.questionText.text = question.title
             holder.answerText.text = "\t\t" + question.answer
 
-            // 点击题目展开/收起答案
             holder.questionText.setOnClickListener {
                 if (holder.answerText.visibility == View.GONE) {
                     holder.answerText.visibility = View.VISIBLE
@@ -109,27 +163,50 @@ class AppFragment : Fragment() {
         override fun getItemCount() = questions.size
     }
 
-    // 导航适配器
+    // 导航适配器修改为使用外部定义的NavViewHolder
     private inner class NavAdapter(
-        private val questions: List<Question>,
+        private val navItems: List<NavItem>,
         private val onItemClick: (Int) -> Unit
-    ) : RecyclerView.Adapter<NavAdapter.NavViewHolder>() {
+    ) : RecyclerView.Adapter<NavViewHolder>() {  // 直接使用外部定义的NavViewHolder
 
-        inner class NavViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val titleText: TextView = itemView.findViewById(R.id.navItemText)
+        override fun getItemViewType(position: Int): Int {
+            return when (navItems[position]) {
+                is NavItem.ModuleItem -> R.layout.item_nav_module
+                is NavItem.QuestionItem -> R.layout.item_nav_question
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NavViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_nav, parent, false)
-            return NavViewHolder(view)
+            return when (viewType) {
+                R.layout.item_nav_module -> {
+                    val view = LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_nav_module, parent, false)
+                    NavViewHolder.ModuleViewHolder(view)
+                }
+                else -> {
+                    val view = LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_nav_question, parent, false)
+                    NavViewHolder.QuestionViewHolder(view)
+                }
+            }
         }
 
         override fun onBindViewHolder(holder: NavViewHolder, position: Int) {
-            holder.titleText.text = questions[position].title
-            holder.itemView.setOnClickListener { onItemClick(position) }
+            when (holder) {
+                is NavViewHolder.ModuleViewHolder -> {
+                    val moduleItem = navItems[position] as NavItem.ModuleItem
+                    holder.titleText.text = moduleItem.moduleName
+                    holder.expandIcon.text = if (moduleItem.module in expandedModules) "▼" else "▶"
+                    holder.itemView.setOnClickListener { onItemClick(position) }
+                }
+                is NavViewHolder.QuestionViewHolder -> {
+                    val questionItem = navItems[position] as NavItem.QuestionItem
+                    holder.titleText.text = "${questionItem.question.number}. ${questionItem.question.title}"
+                    holder.itemView.setOnClickListener { onItemClick(position) }
+                }
+            }
         }
 
-        override fun getItemCount() = questions.size
+        override fun getItemCount() = navItems.size
     }
 }

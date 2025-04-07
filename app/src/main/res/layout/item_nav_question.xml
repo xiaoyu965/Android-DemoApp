@@ -4,12 +4,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="?attr/selectableItemBackground"
-    android:padding="5dp">
+    android:paddingStart="32dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
     <TextView
-        android:id="@+id/navItemText"
+        android:id="@+id/questionTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textColor="@android:color/black" />
 </LinearLayout>
