@@ -1,39 +1,93 @@
 {
   "modules": {
-    "1": "handler",
-    "2": "view",
-    "3": "四大组件"
+    "1": "Android基础架构",
+    "2": "UI系统与渲染",
+    "3": "数据持久化",
+    "4": "网络与通信",
+    "5": "多线程与异步",
+    "6": "性能优化",
+    "7": "架构设计",
+    "8": "实战项目"
+  },
+  "submodules": {
+    "1": {
+      "1": "四大组件",
+      "2": "系统组件扩展"
+    },
+    "2": {
+      "1": "View体系",
+      "2": "动画系统",
+      "3": "Jetpack Compose"
+    },
+    "3": {
+      "1": "本地存储",
+      "2": "序列化"
+    },
+    "4": {
+      "1": "网络框架",
+      "2": "数据解析",
+      "3": "安全机制"
+    },
+    "5": {
+      "1": "线程模型",
+      "2": "Handler",
+      "3": "协程",
+      "4": "跨进程通信"
+    },
+    "6": {
+      "1": "内存优化",
+      "2": "布局优化",
+      "3": "启动优化",
+      "4": "绘制优化",
+      "5": "包大小"
+    },
+    "7": {
+      "1": "设计模式",
+      "2": "模块化",
+      "3": "组件化"
+    },
+    "8": {
+      "1": "系统定制开发",
+      "2": "智能识码",
+      "3": "百度数字人"
+    }
   },
   "questions": [
     {
-      "module": 1,
-      "number": 1,
+      "module": 5,
+      "submodule": 2,
       "title": "Handler是什么？",
       "answer": "Handler是不同线程之间传递和处理消息的机制，主要用于将UI操作送子线程传递到主线程，执行定时任务等。"
     },
     {
-      "module": 1,
-      "number": 2,
+      "module": 2,
+      "submodule": 1,
       "title": "为什么主线程不能执行耗时操作，子线程不能更新UI呢？",
-      "answer": "主线程需要处理UI更新、用户输入等快速响应事件，否则会出现卡顿甚至ANR。\n\t\t子线程不能更新UI是因为UI组件是不安全的，多个线程同时操作同一个UI组件会导致不可预知的结果；安卓的设置原则就是UI操作必须在主线程中执行，在UI框架中，每次更新UI时都会检查当前线程是否位主线程，否则就是抛出异常CalledFromWrongThreadException。"
+      "answer": "主线程需要处理UI更新、用户输入等快速响应事件，否则会出现卡顿甚至ANR。\n\t\t子线程不能更新UI是因为UI组件是不安全的，多个线程同时操作同一个UI组件会导致不可预知的结果；安卓的设计原则就是UI操作必须在主线程中执行，在UI框架中，每次更新UI时都会检查当前线程是否位主线程，否则就是抛出异常CalledFromWrongThreadException。"
     },
     {
       "module": 2,
-      "number": 1,
+      "submodule": 2,
       "title": "What is Kotlin?",
       "answer": "Kotlin is a statically typed programming language for modern multi-platform applications."
     },
     {
       "module": 2,
-      "number": 2,
+      "submodule": 2,
       "title": "What is ViewPager2?",
       "answer": "ViewPager2 is a replacement for ViewPager that supports vertical scrolling and better integration with RecyclerView."
     },
     {
       "module": 3,
-      "number": 1,
+      "submodule": 2,
       "title": "Android四大组件",
       "answer": "Activity、Service、BroadcastReceiver、ContentProvider"
+    },
+    {
+      "module": 3,
+      "submodule": 2,
+      "title": "Activity是什么？",
+      "answer": "Activity是Android应用的一个组件，代表用户界面中的一个屏幕，负责与用户交互。"
     }
   ]
 }

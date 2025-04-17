@@ -14,24 +14,30 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ylx.demoapp.R
 import com.ylx.demoapp.utils.JsonUtils
 
-// 数据模型
 data class QuestionData(
     val modules: Map<String, String>,
+    val submodules: Map<String, Map<String, String>>,
     val questions: List<Question>
 )
 
 data class Question(
     val module: Int,
-    val number: Int,
+    val submodule: Int? = null,
     val title: String,
-    val answer: String
+    val answer: String,
+    var moduleLevelNumber: Int = 0,
+    var submoduleLevelNumber: Int = 0
 )
 
 class AppFragment : Fragment() {
-    // 密封类定义在Fragment类内部，作为成员
     sealed class NavViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         class ModuleViewHolder(itemView: View) : NavViewHolder(itemView) {
             val titleText: TextView = itemView.findViewById(R.id.moduleTitle)
+            val expandIcon: TextView = itemView.findViewById(R.id.expandIcon)
+        }
+
+        class SubmoduleViewHolder(itemView: View) : NavViewHolder(itemView) {
+            val titleText: TextView = itemView.findViewById(R.id.submoduleTitle)
             val expandIcon: TextView = itemView.findViewById(R.id.expandIcon)
         }
 
@@ -43,7 +49,9 @@ class AppFragment : Fragment() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var navRecyclerView: RecyclerView
     private val expandedModules = mutableSetOf<Int>()
+    private val expandedSubmodules = mutableMapOf<Int, MutableSet<Int>>()
     private lateinit var moduleNames: Map<Int, String>
+    private lateinit var submoduleNames: Map<Int, Map<Int, String>>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,25 +60,23 @@ class AppFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_app, container, false)
 
-        // 初始化DrawerLayout
         drawerLayout = view.findViewById(R.id.drawerLayout)
         navRecyclerView = view.findViewById(R.id.navRecyclerView)
 
-        // 从JSON文件加载数据
         val questionData = JsonUtils.parseJsonFromRaw<QuestionData>(requireContext(), R.raw.app)
         moduleNames = questionData.modules.mapKeys { it.key.toInt() }
-        val questions = questionData.questions.sortedBy { it.module }
+        submoduleNames = questionData.submodules.mapKeys { it.key.toInt() }
+            .mapValues { it.value.mapKeys { entry -> entry.key.toInt() } }
 
-        // 绑定主RecyclerView
+        val questions = processAutoNumbering(questionData.questions)
+
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         val adapter = QuestionAdapter(questions)
         recyclerView.adapter = adapter
 
-        // 设置导航RecyclerView
         setupNavigation(questions, recyclerView)
 
-        // 设置菜单按钮点击事件
         view.findViewById<ImageButton>(R.id.menuButton)?.setOnClickListener {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                 drawerLayout.closeDrawer(GravityCompat.START)
@@ -82,21 +88,81 @@ class AppFragment : Fragment() {
         return view
     }
 
+    private fun processAutoNumbering(questions: List<Question>): List<Question> {
+        val result = mutableListOf<Question>()
+
+        // 按模块分组
+        val byModule = questions.groupBy { it.module }
+
+        byModule.forEach { (module, moduleQuestions) ->
+            // 分离模块级别和子模块级别问题
+            val moduleLevelQuestions = moduleQuestions.filter { it.submodule == null }
+            val submoduleLevelQuestions = moduleQuestions.filter { it.submodule != null }
+
+            // 处理模块级别问题编号 (如3.1)
+            moduleLevelQuestions.forEachIndexed { index, question ->
+                result.add(question.copy(moduleLevelNumber = index + 1))
+            }
+
+            // 处理子模块级别问题编号 (如3.2.1)
+            val bySubmodule = submoduleLevelQuestions.groupBy { it.submodule }
+            bySubmodule.forEach { (submodule, submoduleQuestions) ->
+                submodule?.let {
+                    submoduleQuestions.forEachIndexed { index, question ->
+                        result.add(question.copy(
+                            moduleLevelNumber = it, // 子模块号
+                            submoduleLevelNumber = index + 1
+                        ))
+                    }
+                }
+            }
+        }
+
+        return result.sortedWith(compareBy<Question> { it.module }
+            .thenBy { it.submodule ?: 0 }
+            .thenBy { if (it.submodule == null) it.moduleLevelNumber else it.submoduleLevelNumber }
+        )
+    }
+
     private fun setupNavigation(questions: List<Question>, mainRecyclerView: RecyclerView) {
         navRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        val groupedQuestions = questions.groupBy { it.module }
+        val groupedByModule = questions.groupBy { it.module }
         val navItems = mutableListOf<NavItem>()
 
-        groupedQuestions.forEach { (module, questions) ->
-            // 使用moduleNames获取模块名称
+        groupedByModule.forEach { (module, moduleQuestions) ->
             val moduleName = moduleNames[module] ?: "Module $module"
             navItems.add(NavItem.ModuleItem(module, moduleName))
 
             if (module in expandedModules) {
-                questions.forEach { question ->
-                    navItems.add(NavItem.QuestionItem(question))
+                // 初始化该模块的展开子模块集合
+                if (!expandedSubmodules.containsKey(module)) {
+                    expandedSubmodules[module] = mutableSetOf()
                 }
+
+                // 先添加无子模块的问题
+                moduleQuestions.filter { it.submodule == null }
+                    .sortedBy { it.moduleLevelNumber }
+                    .forEach { question ->
+                        navItems.add(NavItem.QuestionItem(question))
+                    }
+
+                // 再处理有子模块的问题
+                moduleQuestions.filter { it.submodule != null }
+                    .groupBy { it.submodule }
+                    .forEach { (submodule, submoduleQuestions) ->
+                        submodule?.let {
+                            val submoduleName = submoduleNames[module]?.get(it) ?: "Submodule $it"
+                            navItems.add(NavItem.SubmoduleItem(module, it, submoduleName))
+
+                            // 检查当前模块下的子模块是否展开
+                            if (expandedSubmodules[module]?.contains(it) == true) {
+                                submoduleQuestions.sortedBy { it.submoduleLevelNumber }.forEach { question ->
+                                    navItems.add(NavItem.QuestionItem(question))
+                                }
+                            }
+                        }
+                    }
             }
         }
 
@@ -111,8 +177,23 @@ class AppFragment : Fragment() {
                     }
                     setupNavigation(questions, mainRecyclerView)
                 }
+                is NavItem.SubmoduleItem -> {
+                    val moduleSubmodules = expandedSubmodules[item.module] ?: mutableSetOf()
+                    if (moduleSubmodules.contains(item.submodule)) {
+                        moduleSubmodules.remove(item.submodule)
+                    } else {
+                        moduleSubmodules.add(item.submodule)
+                    }
+                    expandedSubmodules[item.module] = moduleSubmodules
+                    setupNavigation(questions, mainRecyclerView)
+                }
                 is NavItem.QuestionItem -> {
-                    val questionPosition = questions.indexOfFirst { it.number == item.question.number }
+                    val questionPosition = questions.indexOfFirst { q ->
+                        q.module == item.question.module &&
+                                q.submodule == item.question.submodule &&
+                                (if (q.submodule == null) q.moduleLevelNumber else q.submoduleLevelNumber) ==
+                                (if (item.question.submodule == null) item.question.moduleLevelNumber else item.question.submoduleLevelNumber)
+                    }
                     if (questionPosition != -1) {
                         mainRecyclerView.scrollToPosition(questionPosition)
                     }
@@ -123,13 +204,12 @@ class AppFragment : Fragment() {
         navRecyclerView.adapter = navAdapter
     }
 
-    // 导航项密封类
     sealed class NavItem {
         data class ModuleItem(val module: Int, val moduleName: String) : NavItem()
+        data class SubmoduleItem(val module: Int, val submodule: Int, val submoduleName: String) : NavItem()
         data class QuestionItem(val question: Question) : NavItem()
     }
 
-    // 主列表适配器
     class QuestionAdapter(private val questions: List<Question>) :
         RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder>() {
 
@@ -147,7 +227,12 @@ class AppFragment : Fragment() {
 
         override fun onBindViewHolder(holder: QuestionViewHolder, position: Int) {
             val question = questions[position]
-            holder.idText.text = "${question.module}.${question.number}"
+            val idText = if (question.submodule != null) {
+                "${question.module}.${question.moduleLevelNumber}.${question.submoduleLevelNumber}"
+            } else {
+                "${question.module}.${question.moduleLevelNumber}"
+            }
+            holder.idText.text = idText
             holder.questionText.text = question.title
             holder.answerText.text = "\t\t" + question.answer
 
@@ -163,15 +248,15 @@ class AppFragment : Fragment() {
         override fun getItemCount() = questions.size
     }
 
-    // 导航适配器修改为使用外部定义的NavViewHolder
     private inner class NavAdapter(
         private val navItems: List<NavItem>,
         private val onItemClick: (Int) -> Unit
-    ) : RecyclerView.Adapter<NavViewHolder>() {  // 直接使用外部定义的NavViewHolder
+    ) : RecyclerView.Adapter<NavViewHolder>() {
 
         override fun getItemViewType(position: Int): Int {
             return when (navItems[position]) {
                 is NavItem.ModuleItem -> R.layout.item_nav_module
+                is NavItem.SubmoduleItem -> R.layout.item_nav_submodule
                 is NavItem.QuestionItem -> R.layout.item_nav_question
             }
         }
@@ -182,6 +267,11 @@ class AppFragment : Fragment() {
                     val view = LayoutInflater.from(parent.context)
                         .inflate(R.layout.item_nav_module, parent, false)
                     NavViewHolder.ModuleViewHolder(view)
+                }
+                R.layout.item_nav_submodule -> {
+                    val view = LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_nav_submodule, parent, false)
+                    NavViewHolder.SubmoduleViewHolder(view)
                 }
                 else -> {
                     val view = LayoutInflater.from(parent.context)
@@ -199,9 +289,21 @@ class AppFragment : Fragment() {
                     holder.expandIcon.text = if (moduleItem.module in expandedModules) "▼" else "▶"
                     holder.itemView.setOnClickListener { onItemClick(position) }
                 }
+                is NavViewHolder.SubmoduleViewHolder -> {
+                    val submoduleItem = navItems[position] as NavItem.SubmoduleItem
+                    holder.titleText.text = submoduleItem.submoduleName
+                    val isExpanded = expandedSubmodules[submoduleItem.module]?.contains(submoduleItem.submodule) ?: false
+                    holder.expandIcon.text = if (isExpanded) "▼" else "▶"
+                    holder.itemView.setOnClickListener { onItemClick(position) }
+                }
                 is NavViewHolder.QuestionViewHolder -> {
                     val questionItem = navItems[position] as NavItem.QuestionItem
-                    holder.titleText.text = "${questionItem.question.number}. ${questionItem.question.title}"
+                    val prefix = if (questionItem.question.submodule != null) {
+                        "${questionItem.question.module}.${questionItem.question.moduleLevelNumber}.${questionItem.question.submoduleLevelNumber}."
+                    } else {
+                        "${questionItem.question.module}.${questionItem.question.moduleLevelNumber}."
+                    }
+                    holder.titleText.text = "$prefix ${questionItem.question.title}"
                     holder.itemView.setOnClickListener { onItemClick(position) }
                 }
             }
