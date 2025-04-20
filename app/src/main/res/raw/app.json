@@ -1,93 +1,1096 @@
 {
   "modules": {
-    "1": "Android基础架构",
-    "2": "UI系统与渲染",
+    "1": "Android基础体系",
+    "2": "UI/图形系统",
     "3": "数据持久化",
-    "4": "网络与通信",
-    "5": "多线程与异步",
+    "4": "网络通信",
+    "5": "并发编程",
     "6": "性能优化",
     "7": "架构设计",
-    "8": "实战项目"
+    "8": "安全机制",
+    "9": "测试体系",
+    "10": "工程化建设",
+    "11": "系统原理",
+    "12": "混合开发",
+    "13": "前沿技术",
+    "14": "工具链",
+    "15": "跨平台开发",
+    "16": "项目实战"
   },
   "submodules": {
     "1": {
-      "1": "四大组件",
-      "2": "系统组件扩展"
+      "1": {
+        "name": "组件系统",
+        "items": {
+          "1": "Activity",
+          "2": "Fragment",
+          "3": "Service",
+          "4": "BroadcastReceiver",
+          "5": "ContentProvider"
+        }
+      },
+      "2": {
+        "name": "系统机制",
+        "items": {
+          "1": "Binder",
+          "2": "AMS",
+          "3": "WMS",
+          "4": "PMS"
+        }
+      },
+      "3": {
+        "name": "资源管理",
+        "items": {
+          "1": "多语言适配",
+          "2": "资源限定符",
+          "3": "动态加载"
+        }
+      }
     },
     "2": {
-      "1": "View体系",
-      "2": "动画系统",
-      "3": "Jetpack Compose"
+      "1": {
+        "name": "视图体系",
+        "items": {
+          "1": "View绘制",
+          "2": "事件分发",
+          "3": "自定义View"
+        }
+      },
+      "2": {
+        "name": "动画系统",
+        "items": {
+          "1": "属性动画",
+          "2": "Lottie",
+          "3": "专场动画"
+        }
+      },
+      "3": {
+        "name": "渲染机制",
+        "items": {
+          "1": "VSYNC",
+          "2": "Surface",
+          "3": "渲染管线"
+        }
+      }
     },
     "3": {
-      "1": "本地存储",
-      "2": "序列化"
+      "1": {
+        "name": "本地存储",
+        "items": {
+          "1": "SharedPreferences",
+          "2": "文件存储",
+          "3": "MMKV"
+        }
+      },
+      "2": {
+        "name": "数据库",
+        "items": {
+          "1": "SQLite",
+          "2": "Room"
+        }
+      },
+      "3": {
+        "name": "序列化",
+        "items": {
+          "1": "Parcelable",
+          "2": "Protocol Buffers"
+        }
+      }
     },
     "4": {
-      "1": "网络框架",
-      "2": "数据解析",
-      "3": "安全机制"
+      "1": {
+        "name": "协议层",
+        "items": {
+          "1": "HTTP/2",
+          "2": "WebSocket"
+        }
+      },
+      "2": {
+        "name": "框架层",
+        "items": {
+          "1": "OkHttp",
+          "2": "Retrofit"
+        }
+      },
+      "3": {
+        "name": "安全传输",
+        "items": {
+          "1": "HTTPS",
+          "2": "中间人攻击"
+        }
+      }
     },
     "5": {
-      "1": "线程模型",
-      "2": "Handler",
-      "3": "协程",
-      "4": "跨进程通信"
+      "1": {
+        "name": "基础模型",
+        "items": {
+          "1": "Handler",
+          "2": "线程池",
+          "3": "锁机制"
+        }
+      },
+      "2": {
+        "name": "协程",
+        "items": {
+          "1": "结构化并发",
+          "2": "Flow"
+        }
+      },
+      "3": {
+        "name": "并发问题",
+        "items": {
+          "1": "内存可见性",
+          "2": "死锁排查"
+        }
+      }
     },
     "6": {
-      "1": "内存优化",
-      "2": "布局优化",
-      "3": "启动优化",
-      "4": "绘制优化",
-      "5": "包大小"
+      "1": {
+        "name": "启动优化",
+        "items": {
+          "1": "阶段划分",
+          "2": "类加载"
+        }
+      },
+      "2": {
+        "name": "内存优化",
+        "items": {
+          "1": "LeakCanary",
+          "2": "OOM"
+        }
+      },
+      "3": {
+        "name": "渲染优化",
+        "items": {
+          "1": "过度绘制",
+          "2": "布局层级"
+        }
+      },
+      "4": {
+        "name": "包大小",
+        "items": {}
+      }
     },
     "7": {
-      "1": "设计模式",
-      "2": "模块化",
-      "3": "组件化"
+      "1": {
+        "name": "设计模式",
+        "items": {
+          "1": "MVVM",
+          "2": "MVI",
+          "3": "组件化"
+        }
+      },
+      "2": {
+        "name": "质量保障",
+        "items": {
+          "1": "可测实性",
+          "2": "模块解耦",
+          "3": "DI框架"
+        }
+      },
+      "3": {
+        "name": "演进策略",
+        "items": {
+          "1": "重构方法",
+          "2": "度量指标"
+        }
+      }
     },
     "8": {
-      "1": "系统定制开发",
-      "2": "智能识码",
-      "3": "百度数字人"
+      "1": {
+        "name": "数据安全",
+        "items": {
+          "1": "加密算法",
+          "2": "密钥管理",
+          "3": "数据脱敏"
+        }
+      },
+      "2": {
+        "name": "应用防护",
+        "items": {
+          "1": "反调试",
+          "2": "代码混淆",
+          "3": "完整性检验"
+        }
+      },
+      "3": {
+        "name": "用户隐私",
+        "items": {
+          "1": "权限管理",
+          "2": "合规检测"
+        }
+      }
+    },
+    "9": {
+      "1": {
+        "name": "自动化测试",
+        "items": {
+          "1": "UI测试",
+          "2": "单元测试",
+          "3": "快照测试"
+        }
+      },
+      "2": {
+        "name": "专项测试",
+        "items": {
+          "1": "压力测试",
+          "2": "兼容性测试"
+        }
+      },
+      "3": {
+        "name": "持续集成",
+        "items": {
+          "1": "流水线设计",
+          "2": "质量门禁"
+        }
+      }
+    },
+    "10": {
+      "1": {
+        "name": "构建系统",
+        "items": {
+          "1": "Gradle",
+          "2": "插件开发"
+        }
+      },
+      "2": {
+        "name": "质量管控",
+        "items": {
+          "1": "代码规范",
+          "2": "静态分析"
+        }
+      },
+      "3": {
+        "name": "效率工具",
+        "items": {
+          "1": "脚手架",
+          "2": "诊断工具"
+        }
+      }
+    },
+    "11": {
+      "1": {
+        "name": "内核机制",
+        "items": {
+          "1": "进程管理",
+          "2": "内存管理"
+        }
+      },
+      "2": {
+        "name": "虚拟机",
+        "items": {
+          "1": "ART",
+          "2": "垃圾回收"
+        }
+      },
+      "3": {
+        "name": "硬件交互",
+        "items": {
+          "1": "传感器",
+          "2": "相机"
+        }
+      }
+    },
+    "12": {
+      "1": {
+        "name": "WebView",
+        "items": {
+          "1": "内核优化",
+          "2": "JS通信"
+        }
+      },
+      "2": {
+        "name": "动态化",
+        "items": {
+          "1": "React Native",
+          "2": "热更新"
+        }
+      }
+    },
+    "13": {
+      "1": {
+        "name": "新技术",
+        "items": {
+          "1": "Compose",
+          "2": "KMM"
+        }
+      },
+      "2": {
+        "name": "新硬件",
+        "items": {
+          "1": "折叠屏",
+          "2": "车机"
+        }
+      }
+    },
+    "14": {
+      "1": {
+        "name": "开发工具",
+        "items": {
+          "1": "Android Studio",
+          "2": "Profiler"
+        }
+      },
+      "2": {
+        "name": "调试工具",
+        "items": {
+          "1": "Stetho",
+          "2": "反编译"
+        }
+      }
+    },
+    "15": {
+      "1": {
+        "name": "Flutter",
+        "items": {
+          "1": "渲染引擎",
+          "2": "性能优化"
+        }
+      },
+      "2": {
+        "name": "Rust",
+        "items": {
+          "1": "NDK开发",
+          "2": "内存安全"
+        }
+      }
+    },
+    "16": {
+      "1": {
+        "name": "权限定制",
+        "items": {}
+      },
+      "2": {
+        "name": "智慧识码",
+        "items": {}
+      },
+      "3": {
+        "name": "百度数字人",
+        "items": {}
+      }
     }
   },
   "questions": [
     {
-      "module": 5,
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "Activity",
+      "answer": "生命周期（onCreate到onDestroy）\n启动模式（standard/singleTop/singleTask/singleInstance）\n任务栈管理（TaskAffinity）\n场景化生命周期（分屏/折叠屏）"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "Fragment",
+      "answer": "事务管理（add/replace/commitNow）\n通信方式（ViewModel/接口回调）\n嵌套Fragment陷阱"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 3,
+      "title": "Service",
+      "answer": "前台服务通知适配\nBoundService与AIDL\nJobIntentService迁移"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 4,
+      "title": "Broadcast",
+      "answer": "动态/静态注册差异\n有序广播与优先级\n隐式广播限制"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 5,
+      "title": "ContentProvider",
+      "answer": "多进程数据同步\nURI匹配规则\n数据变更监听"
+    },
+    {
+      "module": 1,
       "submodule": 2,
-      "title": "Handler是什么？",
-      "answer": "Handler是不同线程之间传递和处理消息的机制，主要用于将UI操作送子线程传递到主线程，执行定时任务等。"
+      "subsubmodule": 1,
+      "title": "Binder",
+      "answer": "一次拷贝原理\nProxy-Stub模式\n死亡监听"
+    },
+    {
+      "module": 1,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "AMS",
+      "answer": "应用启动流程（zygote→AMS）\n进程优先级管理（adj）\n四大组件调度"
+    },
+    {
+      "module": 1,
+      "submodule": 2,
+      "subsubmodule": 3,
+      "title": "WMS",
+      "answer": "窗口层级（TYPE_APPLICATION）\n输入事件传递\nSurface分配"
+    },
+    {
+      "module": 1,
+      "submodule": 2,
+      "subsubmodule": 4,
+      "title": "PMS",
+      "answer": "包解析流程\n权限动态授予\n多用户隔离"
+    },
+    {
+      "module": 1,
+      "submodule": 3,
+      "subsubmodule": 1,
+      "title": "多语言适配",
+      "answer": "RTL布局\n字符串占位符"
+    },
+    {
+      "module": 1,
+      "submodule": 3,
+      "subsubmodule": 2,
+      "title": "资源限定符",
+      "answer": "屏幕密度适配（sw600dp）\n夜间模式切换"
+    },
+    {
+      "module": 1,
+      "submodule": 3,
+      "subsubmodule": 3,
+      "title": "动态加载",
+      "answer": "AssetManager Hook\n插件化资源冲突"
     },
     {
       "module": 2,
       "submodule": 1,
+      "subsubmodule": 1,
+      "title": "View绘制",
+      "answer": "measureSpec计算\nonDraw()优化（canvas.clip）\n硬件加速限制"
+    },
+    {
+      "module": 2,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "事件分发",
+      "answer": "触摸事件序列\n冲突解决（requestDisallow）\n嵌套滚动（NestedScroll）"
+    },
+    {
+      "module": 2,
+      "submodule": 1,
+      "subsubmodule": 3,
+      "title": "自定义View",
+      "answer": "属性系统（declare-styleable）\n触摸反馈（VelocityTracker）\n离屏缓冲（LAYER_TYPE）"
+    },
+    {
+      "module": 2,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "属性动画",
+      "answer": "ValueAnimator插值器\n关键帧动画\n路径动画（PathMeasure）"
+    },
+    {
+      "module": 2,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "Lottie",
+      "answer": "JSON解析优化\n动态替换元素"
+    },
+    {
+      "module": 2,
+      "submodule": 2,
+      "subsubmodule": 3,
+      "title": "转场动画",
+      "answer": "SharedElement过渡\n场景动画（Scene）"
+    },
+    {
+      "module": 2,
+      "submodule": 3,
+      "subsubmodule": 1,
+      "title": "VSYNC",
+      "answer": "Choreographer回调\n掉帧监控"
+    },
+    {
+      "module": 2,
+      "submodule": 3,
+      "subsubmodule": 2,
+      "title": "Surface",
+      "answer": "双缓冲机制\nSurfaceTexture"
+    },
+    {
+      "module": 2,
+      "submodule": 3,
+      "subsubmodule": 3,
+      "title": "渲染管线",
+      "answer": "渲染线程分离\nRenderNode树"
+    },
+    {
+      "module": 3,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "SharedPreferences",
+      "answer": "apply()阻塞问题\n多进程异常\n大文件性能"
+    },
+    {
+      "module": 3,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "文件存储",
+      "answer": "沙箱目录区别（getFilesDir/getCacheDir）\n外部存储适配（Scoped Storage）"
+    },
+    {
+      "module": 3,
+      "submodule": 1,
+      "subsubmodule": 3,
+      "title": "MMKV",
+      "answer": "内存映射原理\n多进程同步"
+    },
+    {
+      "module": 3,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "SQLite",
+      "answer": "WAL模式\n索引优化（EXPLAIN QUERY PLAN）\n连接池管理"
+    },
+    {
+      "module": 3,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "Room",
+      "answer": "类型转换（@TypeConverter）\n数据库迁移（fallbackToDestructiveMigration）\n预编译SQL"
+    },
+    {
+      "module": 3,
+      "submodule": 3,
+      "subsubmodule": 1,
+      "title": "Parcelable",
+      "answer": "对象池（obtain/recycle）\n跨进程数据限制"
+    },
+    {
+      "module": 3,
+      "submodule": 3,
+      "subsubmodule": 2,
+      "title": "Protocol Buffers",
+      "answer": "字段兼容规则\n反射性能优化"
+    },
+    {
+      "module": 4,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "HTTP/2",
+      "answer": "多路复用\n头部压缩（HPACK）"
+    },
+    {
+      "module": 4,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "WebSocket",
+      "answer": "心跳保活\n协议升级过程"
+    },
+    {
+      "module": 4,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "OkHttp",
+      "answer": "拦截器链（addInterceptor/addNetworkInterceptor）\n连接池复用\nHTTP缓存控制"
+    },
+    {
+      "module": 4,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "Retrofit",
+      "answer": "动态代理实现\n自定义CallAdapter"
+    },
+    {
+      "module": 4,
+      "submodule": 3,
+      "subsubmodule": 1,
+      "title": "HTTPS",
+      "answer": "证书链校验\n双向认证"
+    },
+    {
+      "module": 4,
+      "submodule": 3,
+      "subsubmodule": 2,
+      "title": "中间人攻击",
+      "answer": "证书锁定（CertificatePinning）\nCharles抓包防御"
+    },
+    {
+      "module": 5,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "Handler",
+      "answer": "MessageQueue阻塞唤醒\n同步屏障（postSyncBarrier）"
+    },
+    {
+      "module": 5,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "线程池",
+      "answer": "核心参数计算\n饱和策略（AbortPolicy）"
+    },
+    {
+      "module": 5,
+      "submodule": 1,
+      "subsubmodule": 3,
+      "title": "锁机制",
+      "answer": "synchronized优化（锁膨胀）\nReentrantReadWriteLock"
+    },
+    {
+      "module": 5,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "结构化并发",
+      "answer": "SupervisorJob\n异常传播"
+    },
+    {
+      "module": 5,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "Flow",
+      "answer": "背压处理（buffer/conflate）\n冷流热流转换"
+    },
+    {
+      "module": 5,
+      "submodule": 3,
+      "subsubmodule": 1,
+      "title": "内存可见性",
+      "answer": "volatile语义\nHappens-Before规则"
+    },
+    {
+      "module": 5,
+      "submodule": 3,
+      "subsubmodule": 2,
+      "title": "死锁排查",
+      "answer": "ThreadDump分析\n资源有序化"
+    },
+    {
+      "module": 6,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "阶段划分",
+      "answer": "冷启动/温启动\n任务分级（CriticalPath）"
+    },
+    {
+      "module": 6,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "类加载",
+      "answer": "类预验证（CLassLoader）\nMultiDex优化"
+    },
+    {
+      "module": 6,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "LeakCanary",
+      "answer": "引用链分析\nHPROF解析"
+    },
+    {
+      "module": 6,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "OOM",
+      "answer": "大图检测（BitmapMonitor）\n内存碎片"
+    },
+    {
+      "module": 6,
+      "submodule": 3,
+      "subsubmodule": 1,
+      "title": "过度绘制",
+      "answer": "Debug GPU Overdraw\n合并绘制（merge标签）"
+    },
+    {
+      "module": 6,
+      "submodule": 3,
+      "subsubmodule": 2,
+      "title": "布局层级",
+      "answer": "ConstraintLayout优化\n异步布局（AsyncLayoutInflater）"
+    },
+    {
+      "module": 7,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "MVVM",
+      "answer": "DataBinding双向绑定原理\nViewModel生命周期感知\nLiveData防抖（distinctUntilChanged）"
+    },
+    {
+      "module": 7,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "MVI",
+      "answer": "单向数据流设计\nReducer纯函数实现\n状态恢复（SavedStateHandle）"
+    },
+    {
+      "module": 7,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "可测试性",
+      "answer": "依赖注入（Hilt组件作用域）\n测试替身（Mockito深度使用）"
+    },
+    {
+      "module": 7,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "模块解耦",
+      "answer": "接口下沉设计\n模块通信总线（EventBus优化）"
+    },
+    {
+      "module": 7,
+      "submodule": 3,
+      "subsubmodule": 1,
+      "title": "重构方法",
+      "answer": "特征切片迁移\n并行运行验证"
+    },
+    {
+      "module": 7,
+      "submodule": 3,
+      "subsubmodule": 2,
+      "title": "度量指标",
+      "answer": "组件内聚度计算\n依赖关系矩阵"
+    },
+    {
+      "module": 8,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "加密算法",
+      "answer": "AES-GCM模式\n密钥派生（PBKDF2）"
+    },
+    {
+      "module": 8,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "密钥管理",
+      "answer": "AndroidKeyStore使用\n白盒加密方案"
+    },
+    {
+      "module": 8,
+      "submodule": 1,
+      "subsubmodule": 3,
+      "title": "数据脱敏",
+      "answer": "日志过滤（Pattern过滤）\n内存擦除（SecureRandom）"
+    },
+    {
+      "module": 8,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "反调试",
+      "answer": "ptrace检测\n调试端口扫描"
+    },
+    {
+      "module": 8,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "代码混淆",
+      "answer": "ProGuard规则优化\n字符串加密（StringFog）"
+    },
+    {
+      "module": 8,
+      "submodule": 2,
+      "subsubmodule": 3,
+      "title": "完整性校验",
+      "answer": "签名校验（PackageManager）\n文件哈希验证"
+    },
+    {
+      "module": 8,
+      "submodule": 3,
+      "subsubmodule": 1,
+      "title": "权限管理",
+      "answer": "危险权限分组\n后台定位限制"
+    },
+    {
+      "module": 8,
+      "submodule": 3,
+      "subsubmodule": 2,
+      "title": "合规检测",
+      "answer": "第三方SDK数据流向\n隐私协议动态同意"
+    },
+    {
+      "module": 9,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "UI测试",
+      "answer": "Espresso异步操作处理\nUI Automator跨应用测试"
+    },
+    {
+      "module": 9,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "单元测试",
+      "answer": "PowerMock静态方法mock\n覆盖率Jacoco配置"
+    },
+    {
+      "module": 9,
+      "submodule": 1,
+      "subsubmodule": 3,
+      "title": "快照测试",
+      "answer": "Screenshot测试（PixelCopy）"
+    },
+    {
+      "module": 9,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "压力测试",
+      "answer": "Monkey参数定制\n临界条件测试（低内存）"
+    },
+    {
+      "module": 9,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "兼容性测试",
+      "answer": "API级别差异处理\n厂商ROM适配问题"
+    },
+    {
+      "module": 9,
+      "submodule": 3,
+      "subsubmodule": 1,
+      "title": "流水线设计",
+      "answer": "分级构建（Debug/Release）\n产物自动签名"
+    },
+    {
+      "module": 9,
+      "submodule": 3,
+      "subsubmodule": 2,
+      "title": "质量门禁",
+      "answer": "静态检查（SonarQube）\n性能基线对比"
+    },
+    {
+      "module": 10,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "Gradle",
+      "answer": "变体维度（flavorDimensions）\n编译缓存清理（--build-cache）"
+    },
+    {
+      "module": 10,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "插件开发",
+      "answer": "Transform API（ASM字节码操作）\n自定义Task依赖"
+    },
+    {
+      "module": 10,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "代码规范",
+      "answer": "Kotlin DSL代码风格\n提交前检查（pre-commit）"
+    },
+    {
+      "module": 10,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "静态分析",
+      "answer": "Lint自定义规则\n架构约束（ArchUnit）"
+    },
+    {
+      "module": 10,
+      "submodule": 3,
+      "subsubmodule": 1,
+      "title": "脚手架",
+      "answer": "模板代码生成（Freemarker）\n模块自动创建"
+    },
+    {
+      "module": 10,
+      "submodule": 3,
+      "subsubmodule": 2,
+      "title": "诊断工具",
+      "answer": "方法耗时统计（Hugo）\n阻塞监控（BlockCanary）"
+    },
+    {
+      "module": 11,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "进程管理",
+      "answer": "fork与zygote优化\nOOM_ADJ计算规则"
+    },
+    {
+      "module": 11,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "内存管理",
+      "answer": "LMK杀进程策略\n内存回收（kswapd）"
+    },
+    {
+      "module": 11,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "ART",
+      "answer": "AOT/JIT编译切换\n方法内联优化"
+    },
+    {
+      "module": 11,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "垃圾回收",
+      "answer": "Concurrent GC流程\n引用队列（ReferenceQueue）"
+    },
+    {
+      "module": 11,
+      "submodule": 3,
+      "subsubmodule": 1,
+      "title": "传感器",
+      "answer": "采样率控制\n传感器融合"
+    },
+    {
+      "module": 11,
+      "submodule": 3,
+      "subsubmodule": 2,
+      "title": "相机",
+      "answer": "Camera2管线配置\n表面纹理（SurfaceTexture）"
+    },
+    {
+      "module": 12,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "内核优化",
+      "answer": "独立进程方案\nV8快照预热"
+    },
+    {
+      "module": 12,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "JS通信",
+      "answer": "@JavascriptInterface安全限制\nPromise异步支持"
+    },
+    {
+      "module": 12,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "React Native",
+      "answer": "JSI通信机制\nTurbo Modules优化"
+    },
+    {
+      "module": 12,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "热更新",
+      "answer": "差分更新（bsdiff）\n类替换（DexClassLoader）"
+    },
+    {
+      "module": 13,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "Compose",
+      "answer": "重组作用域（RecompositionScope）\n状态提升模式"
+    },
+    {
+      "module": 13,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "KMM",
+      "answer": "预期声明（expect/actual）\n多平台资源共享"
+    },
+    {
+      "module": 13,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "折叠屏",
+      "answer": "铰链角度检测\n多窗口布局切换"
+    },
+    {
+      "module": 13,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "车机",
+      "answer": "CarAppService\n驾驶模式限制"
+    },
+    {
+      "module": 14,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "Android Studio",
+      "answer": "布局检查器（Layout Inspector）\n数据库调试"
+    },
+    {
+      "module": 14,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "Profiler",
+      "answer": "堆转储分析\n网络请求追踪"
+    },
+    {
+      "module": 14,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "Stetho",
+      "answer": "数据库导出\n网络抓包"
+    },
+    {
+      "module": 14,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "反编译",
+      "answer": "Jadx代码还原\n签名验证绕过"
+    },
+    {
+      "module": 15,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "渲染引擎",
+      "answer": "Skia图层合成\nPlatformView混合栈"
+    },
+    {
+      "module": 15,
+      "submodule": 1,
+      "subsubmodule": 2,
+      "title": "性能优化",
+      "answer": "Isolate通信\n图片缓存（extended_image）"
+    },
+    {
+      "module": 15,
+      "submodule": 2,
+      "subsubmodule": 1,
+      "title": "NDK开发",
+      "answer": "JNI调用开销\n异常处理（jni-rs）"
+    },
+    {
+      "module": 15,
+      "submodule": 2,
+      "subsubmodule": 2,
+      "title": "内存安全",
+      "answer": "所有权模型\nFFI边界检查"
+    },
+    {
+      "module": 5,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "Handler是什么？",
+      "answer": "Handler是不同线程之间传递和处理消息的机制，主要用于将UI操作送子线程传递到主线程，执行定时任务等。"
+    },
+    {
+      "module": 5,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "子线可以直接创建Handler对象吗？",
+      "answer": "子线程必须手动初始化Looper，调用Looper.prepare()和Looper.loop(),如果需要终止Looper循环，需要调用Looper.quit()或Looper.quitSafely()，两者的区别是quit()立即移除所有消息，可能导致延迟消息未执行，移除所有未来消息，quitSafely()保留已到时的消息执行。"
+    },
+    {
+      "module": 5,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "Handler内存泄漏的场景及解决方案？",
+      "answer": "场景：非静态内部类、匿名内部类、静态Handler等持有外部类（activity）的引用，当外部类销毁时，如果还有未处理的消息或者延时消息，就会发生内存泄漏。\n\t\t解决方法：1、使用静态内部类+弱引用。2、在activity销毁时调用removeCallbacksAndMessages(null)清除消息。"
+    },
+    {
+      "module": 5,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "Message.obtain()和new Message()有什么区别？",
+      "answer": "Message.obtain()是从消息对象池中获取一个可复用的Message对象，可以避免频繁创建和销毁对象的开销，而new的方式每次都需要重新分配内存，频繁创建可能导致更多的GC操作。"
+    },
+    {
+      "module": 5,
+      "submodule": 1,
+      "subsubmodule": 1,
       "title": "为什么主线程不能执行耗时操作，子线程不能更新UI呢？",
-      "answer": "主线程需要处理UI更新、用户输入等快速响应事件，否则会出现卡顿甚至ANR。\n\t\t子线程不能更新UI是因为UI组件是不安全的，多个线程同时操作同一个UI组件会导致不可预知的结果；安卓的设计原则就是UI操作必须在主线程中执行，在UI框架中，每次更新UI时都会检查当前线程是否位主线程，否则就是抛出异常CalledFromWrongThreadException。"
+      "answer": "主线程需要处理UI更新、用户输入等快速响应事件，否则会出现卡顿甚至ANR。\n\t\t子线程不能更新UI是因为UI组件是不安全的，多个线程同时操作同一个UI组件会导致不可预知的结果；安卓的设置原则就是UI操作必须在主线程中执行，在UI框架中，每次更新UI时都会检查当前线程是否为主线程，否则就是抛出异常CalledFromWrongThreadException。"
     },
     {
-      "module": 2,
-      "submodule": 2,
-      "title": "What is Kotlin?",
-      "answer": "Kotlin is a statically typed programming language for modern multi-platform applications."
-    },
-    {
-      "module": 2,
-      "submodule": 2,
-      "title": "What is ViewPager2?",
-      "answer": "ViewPager2 is a replacement for ViewPager that supports vertical scrolling and better integration with RecyclerView."
-    },
-    {
-      "module": 3,
-      "submodule": 2,
-      "title": "Android四大组件",
-      "answer": "Activity、Service、BroadcastReceiver、ContentProvider"
-    },
-    {
-      "module": 3,
-      "submodule": 2,
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 1,
       "title": "Activity是什么？",
       "answer": "Activity是Android应用的一个组件，代表用户界面中的一个屏幕，负责与用户交互。"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 3,
+      "title": "Service是什么？",
+      "answer": "Service是Android中可以在后台执行长时间运行操作的组件，没有用户界面。"
     }
   ]
 }
