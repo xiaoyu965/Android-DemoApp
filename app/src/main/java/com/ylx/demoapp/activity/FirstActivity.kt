@@ -1,4 +1,4 @@
-package com.ylx.demoapp
+package com.ylx.demoapp.activity
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -11,6 +11,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.camera.view.PreviewView
+import com.ylx.demoapp.R
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors

@@ -1,4 +1,4 @@
-package com.ylx.demoapp
+package com.ylx.demoapp.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -14,6 +14,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ylx.ability.LogUtils
+import com.ylx.demoapp.R
 import com.ylx.demoapp.fragment.AlgFragment
 import com.ylx.demoapp.fragment.AppFragment
 import com.ylx.demoapp.fragment.FwkFragment
@@ -94,7 +95,11 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_note -> {
-//                    showAddFriendDialog()
+                    startActivity(Intent(this, RecycleViewActivity::class.java))
+                    true
+                }
+                R.id.menu_customize_view -> {
+                    startActivity(Intent(this, CustomizeViewActivity::class.java))
                     true
                 }
                 else -> false

@@ -11,4 +11,9 @@
         android:title="@string/note"
         android:icon="@drawable/note"/>
 
+    <item
+        android:id="@+id/menu_customize_view"
+        android:title="@string/cusview"
+        android:icon="@drawable/note"/>
+
 </menu>

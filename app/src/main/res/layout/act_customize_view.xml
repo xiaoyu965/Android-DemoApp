@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ylx.demoapp.view.CustomizeViewGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.ylx.demoapp.view.CustomizeView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:default_size="50dp"
+        app:color="#00aacc"
+        android:background="#abc123"/>
+    <Button
+        android:text="按钮"
+        android:layout_marginLeft="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:text="编辑框"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</com.ylx.demoapp.view.CustomizeViewGroup>

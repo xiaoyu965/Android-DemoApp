@@ -1091,6 +1091,111 @@
       "subsubmodule": 3,
       "title": "Service是什么？",
       "answer": "Service是Android中可以在后台执行长时间运行操作的组件，没有用户界面。"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "Activity的生命周期，如何摧毁一个Activity?",
+      "answer": "一、Android 通过回调方法管理 Activity 的状态变化，主要生命周期方法如下：\nonCreate()\tActivity 首次创建时调用（初始化 UI、数据绑定等）。\nonStart()\tActivity 即将进入前台（可见但不可交互）。\nonResume()\tActivity 获得焦点（可交互，如用户操作）。\nonPause()\tActivity 失去焦点（如跳转到其他 Activity，但部分可见）。\nonStop()\tActivity 完全不可见（如被其他 Activity 完全覆盖）。\nonDestroy()\tActivity 被销毁前（主动调用 finish() 或系统回收资源）。\nonRestart()\tActivity 从停止状态重新启动（onStop() 后再次返回）。\n\n二、如何主动销毁一个 Activity？\n1. 调用 finish()\n这是最常用的方法，会触发 Activity 的销毁流程：\nfinish(); // 销毁当前 Activity\n效果：依次执行 onPause() → onStop() → onDestroy()。\n注意：调用后 Activity 会被移除任务栈（除非配置了特殊启动模式）。\n\n2. 通过 Activity.finishAffinity()\n销毁当前 Activity 及其同任务栈中的所有关联 Activity（适用于退出整个应用分支）：\nfinishAffinity(); // 销毁同一任务栈中的所有关联 Activity\n\n3. 通过 Activity.finishAndRemoveTask()（API 21+）\n销毁 Activity 并移除其所在的任务栈（适用于从最近任务列表中彻底清除）：\nfinishAndRemoveTask(); // 销毁 Activity 并移除任务栈\n        \n三、系统被动销毁 Activity\n当系统资源不足（如内存不足）时，系统可能销毁后台 Activity，但会优先销毁 onStop() 状态的 Activity。此时：\n系统会调用 onSaveInstanceState() 保存临时数据（如用户输入）。\n当用户返回时，通过 onCreate(Bundle savedInstanceState) 恢复数据。\n        \n四、销毁 Activity 的注意事项\n避免内存泄漏：\n在 onDestroy() 中释放资源（如取消网络请求、解绑服务、清除 Handler 消息等）。"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "Activity的4大启动模式，与开发中需要注意的问题，如onNewIntent() 的调用？",
+      "answer": "一、四大启动模式\n通过 AndroidManifest.xml 或 Intent 标志位配置：\n1. standard（默认模式）\n行为：每次启动都会创建新的 Activity 实例。\n任务栈：新实例放入当前任务栈顶部。\n适用场景：普通页面（如新闻详情页）。\n\n2. singleTop（栈顶复用）\n行为：如果 Activity 已位于栈顶，则不会创建新实例，而是调用 onNewIntent()。\n任务栈：若不在栈顶，则创建新实例。\n适用场景：避免重复打开同一页面（如通知跳转）。\n\n3. singleTask（栈内单例）\n行为：如果任务栈中已存在该 Activity 实例，则复用并清除其上方所有 Activity，调用 onNewIntent()。若不存在，则创建新实例并放入指定任务栈（默认当前栈）。\n任务栈：可通过 taskAffinity 指定独立任务栈。\n适用场景：应用主页（如微信主界面）。\n\n4. singleInstance（全局单例）\n行为：独占一个任务栈，且该栈中只能有这一个 Activity。后续启动直接复用，调用 onNewIntent()。\n任务栈：强制创建新任务栈。\n适用场景：独立功能（如系统拨号界面）。\n\n二、onNewIntent() 的调用与注意事项\n1. 调用时机\n当 Activity 因启动模式（singleTop/singleTask/singleInstance）被复用时，系统会调用 onNewIntent() 而非 onCreate()。\n2. 必须重写并处理数据"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "Intent显示跳转与隐式跳转，如何使用？",
+      "answer": "一、显式跳转（Explicit Intent）\n显式跳转通过明确指定目标组件的类名来启动，通常用于同一应用内的组件跳转。\n\n二、隐式跳转（Implicit Intent）\n隐式跳转通过指定 Action、Category、Data（URI）等，由系统匹配符合条件的组件，通常用于跨应用调用（如打开浏览器、地图、分享等）。\n隐式 Intent 的核心属性：\nAction\t要执行的操作（如 Intent.ACTION_VIEW、Intent.ACTION_SEND）。\nCategory\t附加条件（如 Intent.CATEGORY_DEFAULT）。\nData\t数据 URI（如 tel:、mailto:、content://）。\nType\tMIME 类型（如 text/plain、image/*）。\nPackage\t限制匹配范围（如仅匹配指定包名的应用）。\n\n三、隐式跳转的匹配规则\n1. 目标组件需声明 <intent-filter>\n在 AndroidManifest.xml 中为目标 Activity 配置：\n<activity android:name=\".ShareActivity\">\n    <intent-filter>\n        <!-- 必须声明默认 Category -->\n        <category android:name=\"android.intent.category.DEFAULT\" />\n        <!-- 指定 Action 和 Data -->\n        <action android:name=\"android.intent.action.SEND\" />\n        <data android:mimeType=\"text/plain\" />\n    </intent-filter>\n</activity>\n\n2. 检查是否有匹配的组件\n隐式 Intent 可能无匹配，需提前检查\nIntent intent = new Intent(Intent.ACTION_VIEW);\nintent.setData(Uri.parse(\"https://www.example.com\"));\n// 检查是否有应用能处理该 Intent\nif (intent.resolveActivity(getPackageManager()) != null) {\n    startActivity(intent);\n} else {\n    Toast.makeText(this, \"无可用浏览器\", Toast.LENGTH_SHORT).show();\n}"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "Activity A跳转B，B跳转C，A不能直接跳转到C，A如何传递消息给C？",
+      "answer": "方案 1：通过 Activity B 中转（显式传递）\n步骤\nA → B：A 将数据传递给 B。\nB → C：B 将数据转发给 C。\n\n方案 2：使用全局单例（Application/ViewModel）\n步骤\n在 Application 类或全局 ViewModel 中存储数据。\nActivity C 直接从全局容器读取数据。\n\n方案 3：使用 SharedPreferences 或数据库\n步骤\nActivity A 将数据写入 SharedPreferences 或数据库。\nActivity C 直接读取存储的数据。\n\n方案 4：使用 EventBus 或广播（LocalBroadcastManager）\n步骤\nActivity A 发送事件或广播。\nActivity C 订阅并接收事件。\n\n方案 5：通过 Intent 的 FLAG_ACTIVITY_REORDER_TO_FRONT（特殊场景）\n如果 C 已存在于任务栈中，可通过 重新排序栈 唤醒 C 并传递数据。\n适用场景：A → B → C → B，此时 A 需要直接通知 C。"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "Activity如何保存状态的？",
+      "answer": "一、临时状态保存（配置变更）\n  适用于屏幕旋转、语言切换等场景，数据保存在内存中，通过系统自动回调处理。\n1. 使用 onSaveInstanceState()\n  触发时机：Activity 被系统 临时销毁（如配置变更或内存回收）前调用。\n  保存数据：将临时状态存入 Bundle。\n2. 恢复数据：onCreate() 或 onRestoreInstanceState()\n  onCreate()：需检查 savedInstanceState 是否为 null。\n3. 适用场景\n  临时 UI 状态（如输入框内容、滚动位置）。\n  轻量级数据（Bundle 不适合存储大量数据）。\n\n二、持久化状态保存（长期存储）\n适用于应用重启或进程被杀后恢复数据，通过本地存储实现。\n1. SharedPreferences\n  存储键值对数据（如用户设置）。\n2. 数据库（Room/SQLite）\n  存储结构化数据（如用户列表）。\n3. 文件存储\n  保存大文件或自定义数据格式。\n\n三、ViewModel + SavedStateHandle\n  结合 ViewModel 和 SavedStateHandle，在配置变更时自动保留数据。"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 1,
+      "title": "请描诉Activity的启动流程，从点击图标开始。",
+      "answer": "一、流程图概览\n  participant Launcher as 桌面(Launcher)\n  participant AMS as ActivityManagerService\n  participant Zygote as Zygote进程\n  participant App as 应用进程\n  participant MainThread as 主线程(UI线程)\n  participant Activity as 目标Activity\n\n  Launcher->>AMS: 1. 发送启动Intent\n  AMS->>Zygote: 2. 请求创建进程（若应用未运行）\n  Zygote->>App: 3. 孵化应用进程\n  App->>AMS: 4. 注册ApplicationThread\n  AMS->>App: 5. 调度启动Activity\n  App->>MainThread: 6. 创建/初始化Activity\n  MainThread->>Activity: 7. 执行生命周期回调\n  Activity-->>Launcher: 8. 显示界面\n\n二、详细步骤解析\n1. 用户点击应用图标\n  触发操作：\n  桌面（Launcher）捕获点击事件，获取应用的 启动Intent（包含目标 Activity 信息，通常是 MainActivity）。\n        \n2. Launcher 请求 AMS\n  跨进程通信：\n  Launcher 通过 Binder 向系统核心服务 ActivityManagerService (AMS) 发送请求，携带以下信息：\n  java\n  Intent {\n  action=android.intent.action.MAIN,\n  category=android.intent.category.LAUNCHER,\n  component=com.example.app/.MainActivity\n  }\n        \n3. AMS 处理请求\n  检查进程状态：\n  如果应用进程 已存在：直接复用。\n  如果应用进程 未运行：通过 Zygote 进程孵化新进程。\n  任务栈管理：\n  AMS 根据 launchMode 和任务栈（Task）决定如何放置目标 Activity（如新建栈或复用现有实例）。\n        \n4. 创建应用进程（若需）\n  Zygote 孵化进程：\n  AMS 通过 socket 通知 Zygote 进程，复制自身生成一个新的应用进程，并执行 ActivityThread.main() 入口方法。\n        \n5. 应用进程初始化\n  主线程启动：\n  创建 ActivityThread 对象（主线程核心类）。\n  绑定 ApplicationThread 到 AMS（用于后续跨进程通信）。\n  创建 Application：\n  调用 Application.onCreate()（全局初始化）。\n        \n6. AMS 调度 Activity 启动\n  跨进程调用：\n  AMS 通过 Binder 通知应用进程的 ApplicationThread，请求启动目标 Activity。\n\n7. 创建并初始化 Activity\n  创建实例：\n  通过反射调用目标 Activity 的构造函数。\n  生命周期回调：\n  主线程依次执行：\n  java\n  onCreate() → onStart() → onResume()\n  UI 渲染：\n  onCreate() 中加载布局（setContentView()）。\n  onResume() 后界面可见并接收用户输入。\n        \n8. 界面显示\n  WindowManager 添加 View：\n  Activity 的根视图（DecorView）被添加到 WindowManager，通过 SurfaceFlinger 渲染到屏幕。"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 3,
+      "title": "Service的生命周期是什么样的？",
+      "answer": "Android 中的 Service 是一种后台组件，用于执行长时间运行的操作（无界面交互）。\n\n一、Service 生命周期概览\n1. 两种启动方式\nstartService()，执行独立后台任务（如音乐播放），与调用者无关，需手动停止\nbindService()，跨进程/组件通信（如数据服务），绑定后与调用者共存，解绑时销毁\n2. 完整生命周期方法\nonCreate() → onStartCommand()（或 onBind()） → 运行中 → onUnbind()/onDestroy()\n\n二、通过 startService() 启动的生命周期\n1. 流程\nparticipant Caller as 调用者\nparticipant Service as Service\nparticipant AMS as ActivityManagerService\n\nCaller->>AMS: 1. startService(intent)\nAMS->>Service: 2. onCreate()（若首次创建）\nAMS->>Service: 3. onStartCommand(intent, flags, startId)\nService-->>AMS: 4. 保持运行（直到显式停止）\nCaller->>AMS: 5. stopService() 或 Service->stopSelf()\nAMS->>Service: 6. onDestroy()\n\n2. 关键方法说明\nonCreate()\n首次创建时调用（适合一次性初始化，如媒体播放器）。\nonStartCommand()\n每次调用 startService() 时触发，返回 START_* 标志控制行为：\nSTART_STICKY：服务被杀死后自动重建（Intent 可能为 null）。\nSTART_NOT_STICKY：被杀死后不自动重建。\nSTART_REDELIVER_INTENT：重建时重发最后一次 Intent。\nonDestroy()\n释放资源（如停止线程、断开连接）。\n\n3. 特点\n独立运行：即使调用者退出，Service 仍可继续运行。\n需手动停止：必须调用 stopService() 或 stopSelf()，否则可能内存泄漏。\n\n三、通过 bindService() 启动的生命周期\n1. 流程\nparticipant Caller as 调用者\nparticipant Service as Service\nparticipant AMS as ActivityManagerService\nparticipant Binder as Binder接口\n\nCaller->>AMS: 1. bindService(intent, conn, flags)\nAMS->>Service: 2. onCreate()（若首次创建）\nService->>Binder: 3. onBind() → 返回IBinder对象\nBinder-->>Caller: 4. 通过ServiceConnection.onServiceConnected()获取IBinder\nCaller->>Service: 5. 通过IBinder调用方法\nCaller->>AMS: 6. unbindService(conn)\nAMS->>Service: 7. onUnbind()\nAMS->>Service: 8. onDestroy()（若无其他绑定/启动）\n\n2. 关键方法说明\nonBind()\n返回 IBinder 对象，用于调用者与服务通信（如实现跨进程 AIDL）。\nonUnbind()\n所有调用者解绑时触发，返回 true 表示下次绑定会重新调用 onRebind()。\nonRebind()\n仅当 onUnbind() 返回 true 且服务未被销毁时触发。\n\n3. 特点\n依赖调用者：所有绑定者解绑后，Service 默认销毁（除非同时被 startService() 启动）。\n实时通信：通过 IBinder 直接调用服务方法（如控制音乐播放进度）。\n\n四、混合启动模式（start + bind）\n1. 场景举例\n音乐服务同时需要：\n独立运行（startService() 保证播放不中断）。\n与 Activity 交互（bindService() 实现暂停/播放控制）。\n        \n2. 销毁条件\n必须同时满足：\n调用 stopService() 或 stopSelf()。\n所有绑定者解绑。\n\n五、Service 的生命周期状态图\n[*] --> Created: 创建\nCreated --> Started: startService()\nStarted --> Running: onStartCommand()\nRunning --> Destroyed: stopSelf()/stopService()\n\nCreated --> Bound: bindService()\nBound --> Running: onBind()\nBound --> Unbound: onUnbind()\nUnbound --> [*]: 无其他绑定/启动\n\n六、常见问题与优化\n1. 后台限制（Android 8.0+）\n限制：startService() 启动的后台服务可能被系统杀死。\n替代方案：\n使用 JobIntentService（兼容 API 26+）。\n前台服务（需显示通知栏，调用 startForeground()）。\n        \n2. 内存泄漏\n原因：未解绑 bindService() 或未停止 startService()。\n解决：\n在 Activity.onDestroy() 中调用 unbindService()。\n使用 WeakReference 持有 Context。\n        \n3. 跨进程通信\n实现方式：\n继承 Binder 类（同一进程）。\n使用 AIDL（不同进程）。"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 3,
+      "title": "你会在什么情况下使用Service？",
+      "answer": "在 Android 开发中，Service 的核心价值在于执行无需界面交互的后台任务或跨组件通信。\n\n一、优先使用 Service 的场景\n1. 长时间独立运行的任务\n典型场景：\n音乐/播客播放（即使退出应用仍需继续）。\n文件下载/上传（大文件分块传输）。\n实时数据同步（如定期从服务器拉取数据）。\n理由：\nActivity 被销毁时任务不中断。\n通过 startService() 启动，配合 START_STICKY 标志可被系统杀死后自动重启。\n\n2. 跨组件/跨进程通信\n典型场景：\n多个 Activity 共享同一后台服务（如音乐控制界面与锁屏界面）。\n提供数据接口给其他应用（如地图 SDK 的位置服务）。\n理由：\n通过 bindService() 返回 IBinder 实现高效通信。\n使用 AIDL 可支持跨进程调用（如系统服务）。\n        \n3. 需要高优先级的后台任务\n典型场景：\n即时通讯（IM）的消息接收（即使应用在后台）。\n健康应用的传感器数据持续采集。\n优化方案：\n升级为前台服务（startForeground()），显示通知栏避免被系统限制。"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 3,
+      "title": "Service和Thread的区别？",
+      "answer": "在 Android 开发中，Service 和 Thread 是两种完全不同的机制，分别用于解决不同维度的问题。\n\n一、本质区别\n维度\tService\tThread\n定义\tAndroid 的四大组件之一，系统级后台服务\tJava 的线程单元，用于并发执行代码\n所属层级\t应用组件（由系统管理）\t纯 Java/Kotlin 线程（由 JVM 管理）\n生命周期\t受 Android 系统控制（onCreate()、onDestroy() 等）\t手动控制（start()、interrupt()）\n存活条件\t独立于 Activity（除非绑定服务）\t依赖所属进程（主线程或子线程）\n主要用途\t后台任务调度、跨组件/进程通信\t异步操作、避免主线程阻塞\n        \n二、核心差异详解\n1. 生命周期与存活时间\nService\n即使所属 Activity 被销毁，Service 仍可运行（通过 startService() 启动时）。\n系统资源不足时可能被优先回收（需用 startForeground() 提升优先级）。\n示例：音乐播放器退出界面后继续播放。\nThread\n生命周期与所属组件（如 Activity）绑定，组件销毁时线程可能泄露。\n默认情况下，Activity 退出后线程仍会运行（需手动终止）。\n示例：在子线程下载图片，若未取消任务，可能引发内存泄漏。\n        \n2. 任务调度能力\nService\n可通过 Intent 传递参数，支持任务队列管理（如按顺序处理多个请求）。\n系统重启后可通过 onStartCommand() 的返回值（如 START_REDELIVER_INTENT）恢复任务。\nThread\n纯手动管理，需自行实现任务队列、重试机制等。\n进程被杀死后线程无法自动恢复。\n        \n3. 跨组件/进程通信\nService\n天然支持跨组件通信（通过 bindService() 返回 IBinder）。\n可通过 AIDL 实现跨进程调用（如系统服务）。\n示例：多个 Activity 绑定到同一个音乐服务控制播放。\nThread\n仅限同一进程内的线程间通信（通过 Handler、LiveData 等）。\n无法直接跨进程。\n        \n4. 资源占用与系统限制\nService\n作为组件，系统会监控其资源占用（后台限制、省电模式等）。\nAndroid 8.0+ 对后台服务有严格限制（需用前台服务或 JobScheduler）。\nThread\n轻量级，但过多线程会导致性能问题（需线程池管理）。\n不受 Android 后台策略限制（但进程被杀后线程终止）。\n        \n三、使用场景对比\n何时用 Service？\n需要长时间运行且与界面无关的任务（如音乐播放、GPS 追踪）。\n需要跨组件或跨进程共享功能（如数据库服务、RPC 调用）。\n需要系统级管理（如任务恢复、前台通知）。\n何时用 Thread？\n短时异步操作（如网络请求、图片加载）。\n避免主线程（UI 线程）阻塞（防止 ANR）。\n纯计算密集型任务（如数据加密、图像处理）。\n        \n四、常见误区与陷阱\n1. 错误认知：Service = 后台线程\n真相：\nService 默认运行在主线程！若需耗时操作，必须主动创建子线程（否则导致 ANR）。\n\n2. 线程泄露风险\n问题：在 Activity 中启动 Thread 后未及时终止，导致 Activity 无法被回收。\n解决：\n使用 AsyncTask（已废弃）或协程（推荐）。\n在 Activity.onDestroy() 中终止线程：\n\n3. Service 的线程管理\n最佳实践：\n使用 IntentService（已废弃，但原理值得参考）或 HandlerThread 管理线程。\n现代方案：结合 Service + ExecutorService（线程池）：\n\n五、协作关系示例\n音乐播放器架构\n分工说明：\nService 负责保活和跨界面控制。\nThread 实际处理耗时操作（解码、网络请求）。\n        \n六、总结：如何选择？\n需求\t选择\t原因\n需要独立于界面的持久化任务\tService + 子线程\tService 提供生命周期管理，子线程避免 ANR\n短时异步任务（如加载图片）\tThread/协程\t轻量级，无需复杂生命周期管理\n跨组件共享功能（如数据库访问）\tbindService()\t通过 IBinder 提供统一接口\n适应系统后台限制\t前台服务/WorkManager\tService 需配合前台通知或转为计划任务\n        \n一句话原则：\n“Service 是任务的容器，Thread 是任务的执行者” —— 两者通常需要配合使用。"
+    },
+    {
+      "module": 16,
+      "submodule": 3,
+      "subsubmodule": null,
+      "title": "介绍下这个项目",
+      "answer": "数字人就是一个虚拟形象，可以通过语音进行驱动，完成实时播报或者对话，它能够正确展示口型，支持暂停打断等功能，可以做一些简单动作，应用场景包括智能客服问答、新闻播报、虚拟形象直播等。我们做的是一个sdk，给外部提供一些简单的接口调用，就能够使用数字人。"
+    },
+    {
+      "module": 16,
+      "submodule": 3,
+      "subsubmodule": null,
+      "title": "简单说下整个流程",
+      "answer": "整个SDK分成几个模块，分别是鉴权、音频数据处理、音频播报、模型预测和渲染。\n\n1、鉴权模块：接入SDK首先要进行鉴权，我们这边会根据业务方提供的包名和MD5生成一个鉴权文件，业务方可以把这个文件放到本地进行离线鉴权，也可以远程拉取，校验通过后可以进行后续初始化操作，鉴权失败的话可以通过返回的错误码处理。\n\n2、音频数据处理模块：音频源数据可能是本地pcm文件、tts等，第一步要把这个数据转化为音频流，然后对音频流进行切片，固定大小分段分别传入到语音播报线程和模型预测线程。\n\n3、音频播报模块：一份语音数据会同一时刻传给两个线程，其中一个就是语音播报线程，我们使用的是一个三方库oboe库，然后进行播报。\n\n4、模型预测模块：另一份语音会送到模型预测，输入的语音数据，会通过模型预测输出一个唇形数据，就是对应的口型Mat数据。\n\n5、渲染模块：口型数据会和底板数据融合成一个最终的Mat数据，然后通过OpenGL进行渲染，最终显示在屏幕上。"
+    },
+    {
+      "module": 16,
+      "submodule": 3,
+      "subsubmodule": null,
+      "title": "数字人SDK的核心使用场景是什么？在百度app、百度地图等业务中分别解决了什么用户需求？",
+      "answer": "数字人的核心使用场景是语音播报和语音交互，比如带货的产品介绍，学习英语口语，智能问答对话等等。比如在百度app上搜索一些历史人物，进入百度百科，在进入通话功能，就能跟这些人物的虚拟人进行对话，在百度地图上使用语音对话时，就会出现一个卡通形象进行问答交互。"
+    },
+    {
+      "module": 16,
+      "submodule": 3,
+      "subsubmodule": null,
+      "title": "SDK的接入方对数字人功能有哪些定制化需求？你是如何设计接口满足灵活性的？",
+      "answer": "对外主要有两个接口，分别是鉴权和数字人使用。鉴权是通用的，而数字人相关的能力也封装在一个类里面，包括设置不同数字人，不同的功能，只需根据不同的业务方增加不同的方法，而业务方调用的手段是一致的。"
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 3,
+      "title": "",
+      "answer": ""
+    },
+    {
+      "module": 1,
+      "submodule": 1,
+      "subsubmodule": 3,
+      "title": "",
+      "answer": ""
     }
   ]
 }
